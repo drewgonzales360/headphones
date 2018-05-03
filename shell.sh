@@ -27,5 +27,9 @@ pacmd set-default-sink bluez_sink.E9_08_EF_56_12_64
 
 
 # Move all currently playing audio streams to sink
-pacmd list-sink-inputs | grep "index:"
+
+# List all current streams
+pacmd list-sink-inputs | grep "index:" | awk  -F" " '{print $2}'
+
+# Move current streams to my sink
 pacmd move-sink-input [integer] bluez_sink.E9_08_EF_56_12_64
