@@ -83,7 +83,7 @@ shift $((OPTIND - 1))
 
 if [[ $# -lt 2 ]]; then
 	use_mpow
-	return
+	exit
 elif [[ $# -gt 2 ]]; then
 	echo "$usage"
 fi
