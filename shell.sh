@@ -12,7 +12,7 @@ function connect_bluetooth() {
 	coproc bluetoothctl               # start non interactive use with blootoothctl
 	echo 'power on\n' >&p             # turn on bluetooth radio
 	exec 4<&p
-	echo 'connect $1\n' >&p           # connect mac address of my headphone
+	echo "connect $1\n" >&p           # connect mac address of my headphone
 	exec 5<&p
 	echo 'exit\n' >&p
 	exec 6<&p
@@ -50,11 +50,11 @@ function set-sink() {
 function use_mpow() {
 	mpow_mac_address=E9:08:EF:56:12:64
 	connect_bluetooth $mpow_mac_address
-	set-sink $(bluez_sink.$(echo $mpow_mac_address | sed 's/:/_/g'))
+	set-sink bluez_sink.$(echo $mpow_mac_address | sed 's/:/_/g')
 }
 
 function use_speakers() {
-	set-sink alsa.cis.sink
+	set-sink alsa_output.pci-0000_01_00.1.hdmi-stereo-extra2
 }
 ################################################################################
 
@@ -63,8 +63,8 @@ usage="$(basename "$0") [SINK] [-h] -- connect bluetooth headphones
 where:
 		-h  show this help text
 
-available cards:
-$(pactl list cards short)
+available audio sinks:
+$(pacmd list-sinks | grep "name: ")
 "
 
 while getopts ':h' option; do
@@ -81,15 +81,8 @@ done
 shift $((OPTIND - 1))
 
 
-if [[ $# -lt 2 ]]; then
+if [[ "$1" = "mpow" ]]; then
 	use_mpow
-	exit
-elif [[ $# -gt 2 ]]; then
-	echo "$usage"
-fi
-
-if [[ "$1" -eq "mpow" ]]; then
-	use_mpow
-elif [[ "$1" -eq "speakers"]]; then
+elif [[ "$1" = "speakers" ]]; then
 	use_speakers
 fi
