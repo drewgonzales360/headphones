@@ -54,7 +54,7 @@ function use_mpow() {
 }
 
 function use_speakers() {
-	set-sink alsa_output.pci-0000_01_00.1.hdmi-stereo-extra2
+	set-sink alsa_output.pci-0000_00_1b.0.analog-stereo
 }
 ################################################################################
 
