@@ -1,0 +1,10 @@
+---
+
+steps:
+  - label: "Hello"
+    agents:
+      lyft:fleet:buildkite: cpu
+    command: "echo 'Hello World'"
+
+
+...
